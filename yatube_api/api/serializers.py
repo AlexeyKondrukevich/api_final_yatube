@@ -41,13 +41,6 @@ class FollowSerializer(serializers.ModelSerializer):
         default=serializers.CurrentUserDefault(),
     )
 
-    def validate(self, data):
-        if data["user"] == data["following"]:
-            raise serializers.ValidationError(
-                "Вы не можете подписаться на свой аккаунт"
-            )
-        return data
-
     class Meta:
         model = Follow
         fields = "__all__"
@@ -58,3 +51,10 @@ class FollowSerializer(serializers.ModelSerializer):
                 message="Вы уже подписаны на этого пользователя",
             )
         ]
+
+    def validate(self, data):
+        if data["user"] == data["following"]:
+            raise serializers.ValidationError(
+                "Вы не можете подписаться на свой аккаунт"
+            )
+        return data
